@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Navbar from "@/components/layout/navbar";
 
 export const metadata: Metadata = {
   title: "Ethereum Explorer",
-  description: "Ethereum wallet explorer built with Next.js",
+  description: "Explore Ethereum wallets, transactions, NFTs, and gas fees",
 };
 
 export default function RootLayout({
@@ -13,7 +14,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Navbar />
+        {children}
+      </body>
     </html>
   );
 }
