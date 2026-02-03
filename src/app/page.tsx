@@ -25,7 +25,7 @@ export default function HomePage() {
     <main className="relative min-h-screen overflow-hidden bg-slate-950 text-slate-100">
       {/* Background glow */}
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-1/2 top-[-200px] h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-indigo-500/20 blur-[120px]" />
+        <div className="absolute left-1/2 -top-50 h-125 w-125 -translate-x-1/2 rounded-full bg-indigo-500/20 blur-[120px]" />
       </div>
 
       <div className="mx-auto max-w-7xl px-6">
@@ -43,7 +43,7 @@ export default function HomePage() {
 
   {/* Overlays */}
   <div className="absolute inset-0 bg-slate-950/30" />
-  <div className="absolute inset-0 bg-gradient-to-b from-indigo-900/40 via-slate-950/80 to-slate-950" />
+  <div className="absolute inset-0 bg-linear-to-b from-indigo-900/40 via-slate-950/80 to-slate-950" />
 
   {/* Content */}
   <div className="relative z-10 mx-auto flex min-h-[90vh] max-w-7xl flex-col items-center justify-center px-6 text-center">
@@ -53,7 +53,7 @@ export default function HomePage() {
 
     <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
       Explore{" "}
-      <span className="bg-gradient-to-r from-indigo-400 to-purple-500 bg-clip-text text-transparent">
+      <span className="bg-linear-to-r from-indigo-400 to-purple-500 bg-clip-text text-transparent">
         Ethereum
       </span>{" "}
       On-Chain Data
@@ -89,7 +89,7 @@ export default function HomePage() {
                 className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-6 transition hover:-translate-y-1 hover:border-indigo-400/40"
               >
                 {/* Hover glow */}
-                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 opacity-0 transition group-hover:opacity-100" />
+                <div className="absolute inset-0 bg-linear-to-br from-indigo-500/10 to-purple-500/10 opacity-0 transition group-hover:opacity-100" />
 
                 <div className="relative">
                   <h3 className="text-lg font-semibold">
