@@ -65,10 +65,10 @@ export default function LivePrices() {
   const favoriteSet = useMemo(() => new Set(favorites), [favorites]);
 
   return (
-    <div className="flex h-full flex-col rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+    <div className="flex h-full flex-col rounded-3xl border border-white/10 bg-slate-950/70 p-6 backdrop-blur">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold">Live Crypto Prices</h2>
-        <span className="text-xs text-slate-400">
+        <span className="text-xs text-slate-300">
           {updatedAt ? `Updated ${updatedAt}` : "Loading..."}
         </span>
       </div>
@@ -77,7 +77,7 @@ export default function LivePrices() {
         <p className="mt-4 text-sm text-red-400">{error}</p>
       ) : (
         <div className="mt-4 flex-1 overflow-hidden rounded-2xl border border-white/10">
-          <div className="grid grid-cols-[24px_1.4fr_1fr_1fr_1.2fr] gap-2 bg-white/5 px-4 py-2 text-xs text-slate-400">
+          <div className="grid grid-cols-[24px_1.4fr_1fr_1fr_1.2fr] gap-2 bg-slate-900/80 px-4 py-2 text-xs text-slate-300">
             <span />
             <span>Coin</span>
             <span>Price</span>
@@ -94,31 +94,31 @@ export default function LivePrices() {
               return (
                 <div
                   key={coin.id}
-                  className="grid grid-cols-[24px_1.4fr_1fr_1fr_1.2fr] gap-2 border-t border-white/10 px-4 py-3 text-sm transition hover:bg-white/5"
+                  className="grid grid-cols-[24px_1.4fr_1fr_1fr_1.2fr] gap-2 border-t border-white/10 px-4 py-3 text-sm transition hover:bg-white/10"
                 >
                   <button
                     type="button"
                     aria-label="Toggle favorite"
                     onClick={() => toggleFavorite(coin.id)}
                     className={`text-xs ${
-                      favoriteSet.has(coin.id) ? "text-amber-300" : "text-slate-500"
+                      favoriteSet.has(coin.id) ? "text-amber-300" : "text-slate-400"
                     }`}
                   >
                     {favoriteSet.has(coin.id) ? "★" : "☆"}
                   </button>
                   <Link href={`/prices/${coin.id}`} className="min-w-0">
-                    <div className="truncate font-medium text-slate-100">
+                    <div className="truncate font-medium text-white">
                       {coin.name}
                     </div>
-                    <div className="text-xs uppercase text-slate-400">
+                    <div className="text-xs uppercase text-slate-300">
                       {coin.symbol}
                     </div>
                   </Link>
-                  <div className="text-slate-100">
+                  <div className="text-white">
                     ${coin.current_price.toLocaleString()}
                   </div>
                   <div className={changeClass}>{changeText}%</div>
-                  <div className="text-slate-300">
+                  <div className="text-slate-200">
                     ${coin.market_cap.toLocaleString()}
                   </div>
                 </div>

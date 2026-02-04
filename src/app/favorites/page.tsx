@@ -58,24 +58,24 @@ export default function FavoritesPage() {
       <div className="mx-auto max-w-6xl px-6">
         <section className="mb-10">
           <h1 className="text-3xl font-semibold">Favorite Crypto</h1>
-          <p className="mt-2 text-sm text-slate-400">
+          <p className="mt-2 text-sm text-slate-300">
             Your starred coins, kept up to date.
           </p>
         </section>
 
         {favorites.length === 0 && (
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-slate-300">
             No favorites yet. Star coins on the home page.
           </p>
         )}
 
         {loading && (
-          <p className="text-sm text-slate-400">Loading favorites...</p>
+          <p className="text-sm text-slate-300">Loading favorites...</p>
         )}
 
         {coins.length > 0 && (
-          <div className="overflow-hidden rounded-2xl border border-white/10">
-            <div className="grid grid-cols-[24px_1.4fr_1fr_1fr_1.2fr] gap-2 bg-white/5 px-4 py-2 text-xs text-slate-400">
+          <div className="overflow-hidden rounded-2xl border border-white/10 bg-slate-950/70">
+            <div className="grid grid-cols-[24px_1.4fr_1fr_1fr_1.2fr] gap-2 bg-slate-900/80 px-4 py-2 text-xs text-slate-300">
               <span />
               <span>Coin</span>
               <span>Price</span>
@@ -89,8 +89,8 @@ export default function FavoritesPage() {
               return (
                 <div
                   key={coin.id}
-                  className="grid grid-cols-[24px_1.4fr_1fr_1fr_1.2fr] gap-2 border-t border-white/10 px-4 py-3 text-sm"
-                >
+                    className="grid grid-cols-[24px_1.4fr_1fr_1fr_1.2fr] gap-2 border-t border-white/10 px-4 py-3 text-sm"
+                  >
                   <button
                     type="button"
                     aria-label="Remove favorite"
@@ -100,18 +100,18 @@ export default function FavoritesPage() {
                     ★
                   </button>
                   <Link href={`/prices/${coin.id}`} className="min-w-0">
-                    <div className="truncate font-medium text-slate-100">
+                    <div className="truncate font-medium text-white">
                       {coin.name}
                     </div>
-                    <div className="text-xs uppercase text-slate-400">
+                    <div className="text-xs uppercase text-slate-300">
                       {coin.symbol}
                     </div>
                   </Link>
-                  <div className="text-slate-100">
+                  <div className="text-white">
                     ${coin.current_price.toLocaleString()}
                   </div>
                   <div className={changeClass}>{change.toFixed(2)}%</div>
-                  <div className="text-slate-300">
+                  <div className="text-slate-200">
                     ${coin.market_cap.toLocaleString()}
                   </div>
                 </div>
