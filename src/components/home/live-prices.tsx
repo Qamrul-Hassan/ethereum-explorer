@@ -7,6 +7,7 @@ type MarketCoin = {
   id: string;
   name: string;
   symbol: string;
+  image: string;
   current_price: number;
   price_change_percentage_24h: number | null;
   market_cap: number;
@@ -77,7 +78,7 @@ export default function LivePrices() {
         <p className="mt-4 text-sm text-red-400">{error}</p>
       ) : (
         <div className="mt-4 flex-1 overflow-hidden rounded-2xl border border-white/10">
-          <div className="grid grid-cols-[24px_1.4fr_1fr_1fr_1.2fr] gap-2 bg-slate-900/80 px-4 py-2 text-xs text-slate-300">
+          <div className="grid grid-cols-[24px_1.8fr_1fr_1fr_1.2fr] gap-2 bg-slate-900/80 px-4 py-2 text-xs text-slate-300">
             <span />
             <span>Coin</span>
             <span>Price</span>
@@ -94,7 +95,7 @@ export default function LivePrices() {
               return (
                 <div
                   key={coin.id}
-                  className="grid grid-cols-[24px_1.4fr_1fr_1fr_1.2fr] gap-2 border-t border-white/10 px-4 py-3 text-sm transition hover:bg-white/10"
+                  className="grid grid-cols-[24px_1.8fr_1fr_1fr_1.2fr] gap-2 border-t border-white/10 px-4 py-3 text-sm transition hover:bg-white/10"
                 >
                   <button
                     type="button"
@@ -104,14 +105,35 @@ export default function LivePrices() {
                       favoriteSet.has(coin.id) ? "text-amber-300" : "text-slate-400"
                     }`}
                   >
-                    {favoriteSet.has(coin.id) ? "★" : "☆"}
+                    <svg
+                      viewBox="0 0 24 24"
+                      className="h-4 w-4"
+                      fill={favoriteSet.has(coin.id) ? "currentColor" : "none"}
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                    >
+                      <path
+                        d="M12 17.27l-5.18 3.05 1.4-5.98L3 9.24l6.06-.52L12 3l2.94 5.72 6.06.52-5.22 5.1 1.4 5.98z"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
                   </button>
                   <Link href={`/prices/${coin.id}`} className="min-w-0">
-                    <div className="truncate font-medium text-white">
-                      {coin.name}
-                    </div>
-                    <div className="text-xs uppercase text-slate-300">
-                      {coin.symbol}
+                    <div className="flex items-center gap-3">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={coin.image}
+                        alt={coin.name}
+                        className="h-6 w-6 rounded-full"
+                      />
+                      <div className="min-w-0">
+                        <div className="truncate font-medium text-white">
+                          {coin.name}
+                        </div>
+                        <div className="text-xs uppercase text-slate-300">
+                          {coin.symbol}
+                        </div>
+                      </div>
                     </div>
                   </Link>
                   <div className="text-white">
