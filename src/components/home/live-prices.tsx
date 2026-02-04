@@ -67,17 +67,18 @@ export default function LivePrices() {
 
   useEffect(() => {
     fetchPrices(selectedCategory);
-    const id = setInterval(fetchPrices, 30000);
+    const id = setInterval(() => fetchPrices(selectedCategory), 30000);
     const handleVisibility = () => {
       if (document.visibilityState === "visible") {
         fetchPrices(selectedCategory);
       }
     };
-    window.addEventListener("focus", fetchPrices);
+    const handleFocus = () => fetchPrices(selectedCategory);
+    window.addEventListener("focus", handleFocus);
     document.addEventListener("visibilitychange", handleVisibility);
     return () => {
       clearInterval(id);
-      window.removeEventListener("focus", fetchPrices);
+      window.removeEventListener("focus", handleFocus);
       document.removeEventListener("visibilitychange", handleVisibility);
     };
   }, [selectedCategory]);
