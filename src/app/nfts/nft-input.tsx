@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-export default function WalletInput() {
+export default function NftInput() {
   const [address, setAddress] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
@@ -19,7 +19,7 @@ export default function WalletInput() {
     }
 
     setError("");
-    router.push(`/wallet/${address}`);
+    router.push(`/nfts/${address}`);
   };
 
   return (
@@ -42,7 +42,7 @@ export default function WalletInput() {
         onClick={handleSubmit}
         className="w-full bg-amber-400 text-slate-900 hover:bg-amber-300"
       >
-        Explore Wallet
+        Explore NFTs
       </Button>
     </div>
   );

@@ -17,6 +17,10 @@ export default function RootLayout({
       <body suppressHydrationWarning>
         <Navbar />
         {children}
+        <footer className="border-t border-white/10 bg-slate-950/80 py-8 text-center text-xs text-slate-500">
+          © 2026 Ethereum Explorer. Built with Next.js, Etherscan, CoinGecko,
+          and Alchemy.
+        </footer>
       </body>
     </html>
   );
