@@ -40,7 +40,18 @@ export default function LivePrices() {
   useEffect(() => {
     fetchPrices();
     const id = setInterval(fetchPrices, 30000);
-    return () => clearInterval(id);
+    const handleVisibility = () => {
+      if (document.visibilityState === "visible") {
+        fetchPrices();
+      }
+    };
+    window.addEventListener("focus", fetchPrices);
+    document.addEventListener("visibilitychange", handleVisibility);
+    return () => {
+      clearInterval(id);
+      window.removeEventListener("focus", fetchPrices);
+      document.removeEventListener("visibilitychange", handleVisibility);
+    };
   }, []);
 
   useEffect(() => {

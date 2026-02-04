@@ -34,10 +34,9 @@ export default function CoinDetails({ id }: { id: string }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const detailsRes = await fetch(
-          `https://api.coingecko.com/api/v3/coins/${id}`,
-          { cache: "no-store" }
-        );
+        const detailsRes = await fetch(`/api/coin?id=${id}`, {
+          cache: "no-store",
+        });
 
         if (!detailsRes.ok) {
           setError("Unable to load coin details.");
@@ -59,10 +58,9 @@ export default function CoinDetails({ id }: { id: string }) {
     const fetchChart = async () => {
       try {
         setLoadingChart(true);
-        const chartRes = await fetch(
-          `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=${range}`,
-          { cache: "no-store" }
-        );
+        const chartRes = await fetch(`/api/coin/chart?id=${id}&days=${range}`, {
+          cache: "no-store",
+        });
 
         if (!chartRes.ok) {
           setError("Unable to load coin details.");
