@@ -273,7 +273,9 @@ export default function LivePrices() {
                     {(() => {
                       const base = coin.symbol.toUpperCase();
                       const available = pairs[base] ?? [];
-                      return available.includes(quote) ? `${base}/${quote}` : "-";
+                      return available.includes(quote)
+                        ? `${base}/${quote}`
+                        : `${base}/${quote}`;
                     })()}
                   </div>
                   <div className="text-white">
