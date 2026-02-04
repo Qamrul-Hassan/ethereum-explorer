@@ -281,9 +281,10 @@ export default function LivePrices() {
                       const base = coin.symbol.toUpperCase();
                       const pair = `${base}${quote}`;
                       const price = pairPrices[pair];
-                      return typeof price === "number"
-                        ? price.toLocaleString()
-                        : "-";
+                      if (typeof price === "number") {
+                        return price.toLocaleString();
+                      }
+                      return `$${coin.current_price.toLocaleString()}`;
                     })()}
                   </div>
                   <div className={changeClass}>{changeText}%</div>
