@@ -13,17 +13,45 @@ type MarketCoin = {
   market_cap: number;
 };
 
+type Category = {
+  category_id: string;
+  name: string;
+};
+
 const FAVORITES_KEY = "favoriteCoins";
+const STABLES = [
+  "USDT",
+  "USDC",
+  "FDUSD",
+  "TUSD",
+  "DAI",
+  "USDP",
+  "BUSD",
+  "USD1",
+  "USDD",
+  "PYUSD",
+  "LUSD",
+  "FRAX",
+];
 
 export default function LivePrices() {
   const [coins, setCoins] = useState<MarketCoin[] | null>(null);
   const [error, setError] = useState("");
   const [updatedAt, setUpdatedAt] = useState<string>("");
   const [favorites, setFavorites] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [pairs, setPairs] = useState<Record<string, string[]>>({});
+  const [quote, setQuote] = useState<string>("USDT");
+  const [pairPrices, setPairPrices] = useState<Record<string, number>>({});
 
-  const fetchPrices = async () => {
+  const fetchPrices = async (category?: string) => {
     try {
-      const res = await fetch("/api/prices", { cache: "no-store" });
+      const url = category
+        ? `/api/prices?category=${encodeURIComponent(category)}`
+        : "/api/prices";
+      const res = await fetch(url, { cache: "no-store" });
       if (!res.ok) {
         setError("Unable to load prices right now.");
         return;
@@ -38,11 +66,11 @@ export default function LivePrices() {
   };
 
   useEffect(() => {
-    fetchPrices();
+    fetchPrices(selectedCategory);
     const id = setInterval(fetchPrices, 30000);
     const handleVisibility = () => {
       if (document.visibilityState === "visible") {
-        fetchPrices();
+        fetchPrices(selectedCategory);
       }
     };
     window.addEventListener("focus", fetchPrices);
@@ -52,7 +80,39 @@ export default function LivePrices() {
       window.removeEventListener("focus", fetchPrices);
       document.removeEventListener("visibilitychange", handleVisibility);
     };
+  }, [selectedCategory]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const res = await fetch("/api/categories", { cache: "no-store" });
+      if (!res.ok) return;
+      const data = (await res.json()) as Category[];
+      setCategories(Array.isArray(data) ? data : []);
+    };
+
+    const fetchPairs = async () => {
+      const res = await fetch("/api/binance/pairs", { cache: "no-store" });
+      if (!res.ok) return;
+      const data = (await res.json()) as Record<string, string[]>;
+      setPairs(data ?? {});
+    };
+
+    fetchCategories();
+    fetchPairs();
   }, []);
+
+  useEffect(() => {
+    const fetchBinancePrices = async () => {
+      const res = await fetch(`/api/binance/prices?quote=${quote}`, {
+        cache: "no-store",
+      });
+      if (!res.ok) return;
+      const data = (await res.json()) as Record<string, number>;
+      setPairPrices(data ?? {});
+    };
+
+    fetchBinancePrices();
+  }, [quote]);
 
   useEffect(() => {
     try {
@@ -76,6 +136,17 @@ export default function LivePrices() {
 
   const favoriteSet = useMemo(() => new Set(favorites), [favorites]);
 
+  const filteredCoins = useMemo(() => {
+    if (!coins) return null;
+    const query = searchQuery.trim().toLowerCase();
+    if (!query) return coins;
+    return coins.filter(
+      (coin) =>
+        coin.name.toLowerCase().includes(query) ||
+        coin.symbol.toLowerCase().includes(query)
+    );
+  }, [coins, searchQuery]);
+
   return (
     <div className="flex h-full flex-col rounded-3xl border border-white/10 bg-slate-950/70 p-6 backdrop-blur">
       <div className="flex items-center justify-between">
@@ -84,20 +155,70 @@ export default function LivePrices() {
           {updatedAt ? `Updated ${updatedAt}` : "Loading..."}
         </span>
       </div>
+      <div className="mt-4 grid gap-3 md:grid-cols-3">
+        <div>
+          <label className="text-[11px] uppercase tracking-widest text-slate-400">
+            Search
+          </label>
+          <input
+            value={searchQuery}
+            onChange={(event) => setSearchQuery(event.target.value)}
+            placeholder="Search crypto"
+            className="mt-2 w-full rounded-xl border border-white/10 bg-slate-950/70 px-4 py-2 text-sm text-slate-100 placeholder:text-slate-500"
+          />
+        </div>
+        <div>
+          <label className="text-[11px] uppercase tracking-widest text-slate-400">
+            Category
+          </label>
+          <select
+            value={selectedCategory}
+            onChange={(event) => setSelectedCategory(event.target.value)}
+            className="mt-2 w-full rounded-xl border border-white/10 bg-slate-950/70 px-4 py-2 text-sm text-slate-100"
+          >
+            <option value="">All Categories</option>
+            {categories.map((category) => (
+              <option key={category.category_id} value={category.category_id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label className="text-[11px] uppercase tracking-widest text-slate-400">
+            Quote
+          </label>
+          <select
+            value={quote}
+            onChange={(event) => setQuote(event.target.value)}
+            className="mt-2 w-full rounded-xl border border-white/10 bg-slate-950/70 px-4 py-2 text-sm text-slate-100"
+          >
+            {STABLES.map((stable) => (
+              <option key={stable} value={stable}>
+                {stable}
+              </option>
+            ))}
+          </select>
+          <p className="mt-2 text-[11px] text-slate-500">
+            Pairs powered by Binance
+          </p>
+        </div>
+      </div>
 
       {error ? (
         <p className="mt-4 text-sm text-red-400">{error}</p>
       ) : (
         <div className="mt-4 flex-1 overflow-hidden rounded-2xl border border-white/10">
-          <div className="grid grid-cols-[24px_1.8fr_1fr_1fr_1.2fr] gap-2 bg-slate-900/80 px-4 py-2 text-xs text-slate-300">
+          <div className="grid grid-cols-[24px_1.6fr_1fr_1fr_1fr_1.2fr] gap-2 bg-slate-900/80 px-4 py-2 text-xs text-slate-300">
             <span />
             <span>Coin</span>
+            <span>Pair</span>
             <span>Price</span>
             <span>24h</span>
             <span>Market Cap</span>
           </div>
           <div className="h-full overflow-y-auto">
-            {coins?.map((coin) => {
+            {filteredCoins?.map((coin) => {
               const change = coin.price_change_percentage_24h ?? 0;
               const changeText = change.toFixed(2);
               const changeClass =
@@ -106,7 +227,7 @@ export default function LivePrices() {
               return (
                 <div
                   key={coin.id}
-                  className="grid grid-cols-[24px_1.8fr_1fr_1fr_1.2fr] gap-2 border-t border-white/10 px-4 py-3 text-sm transition hover:bg-white/10"
+                  className="grid grid-cols-[24px_1.6fr_1fr_1fr_1fr_1.2fr] gap-2 border-t border-white/10 px-4 py-3 text-sm transition hover:bg-white/10"
                 >
                   <button
                     type="button"
@@ -147,8 +268,22 @@ export default function LivePrices() {
                       </div>
                     </div>
                   </Link>
+                  <div className="text-slate-300">
+                    {(() => {
+                      const base = coin.symbol.toUpperCase();
+                      const available = pairs[base] ?? [];
+                      return available.includes(quote) ? `${base}/${quote}` : "-";
+                    })()}
+                  </div>
                   <div className="text-white">
-                    ${coin.current_price.toLocaleString()}
+                    {(() => {
+                      const base = coin.symbol.toUpperCase();
+                      const pair = `${base}${quote}`;
+                      const price = pairPrices[pair];
+                      return typeof price === "number"
+                        ? price.toLocaleString()
+                        : "-";
+                    })()}
                   </div>
                   <div className={changeClass}>{changeText}%</div>
                   <div className="text-slate-200">
@@ -157,7 +292,7 @@ export default function LivePrices() {
                 </div>
               );
             })}
-            {!coins && (
+            {!filteredCoins && (
               <div className="px-4 py-6 text-sm text-slate-400">
                 Loading prices...
               </div>
