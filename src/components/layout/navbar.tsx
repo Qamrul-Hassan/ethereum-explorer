@@ -18,7 +18,7 @@ export default function Navbar() {
       {/* Full-width glass background */}
       <div className="w-full border-b border-white/10 bg-slate-950/50 backdrop-blur">
         {/* Centered content */}
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
           <Link
             href="/"
             className="text-sm font-semibold text-slate-100"
@@ -26,7 +26,7 @@ export default function Navbar() {
             Ethereum Explorer
           </Link>
 
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden lg:flex items-center gap-6">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
@@ -43,7 +43,7 @@ export default function Navbar() {
             aria-label="Toggle menu"
             aria-expanded={open}
             onClick={() => setOpen((prev) => !prev)}
-            className="md:hidden rounded-full border border-white/10 bg-white/5 p-2 text-slate-200 transition hover:bg-white/10"
+            className="lg:hidden rounded-full border border-white/10 bg-white/5 p-2 text-slate-200 transition hover:bg-white/10"
           >
             <div className="relative h-5 w-6">
               <span
@@ -66,11 +66,11 @@ export default function Navbar() {
         </div>
 
         <div
-          className={`md:hidden overflow-hidden border-t border-white/10 bg-slate-950/70 transition-[max-height] duration-300 ${
+          className={`lg:hidden overflow-hidden border-t border-white/10 bg-slate-950/70 transition-[max-height] duration-300 ${
             open ? "max-h-96" : "max-h-0"
           }`}
         >
-          <div className="mx-auto flex max-w-7xl flex-col gap-2 px-6 py-4">
+          <div className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-4 sm:px-6">
               {navLinks.map((link) => (
                 <Link
                   key={link.name}

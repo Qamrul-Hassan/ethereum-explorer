@@ -25,10 +25,15 @@ export default function NftInput() {
   return (
     <div className="space-y-3">
       <div>
-        <label className="text-xs uppercase tracking-widest text-slate-500">
+        <label
+          htmlFor="nft-address-input"
+          className="text-xs uppercase tracking-widest text-slate-500"
+        >
           Wallet Address
         </label>
         <Input
+          id="nft-address-input"
+          name="walletAddress"
           placeholder="0x..."
           value={address}
           onChange={(e) => setAddress(e.target.value)}

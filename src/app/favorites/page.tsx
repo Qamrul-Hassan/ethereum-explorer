@@ -55,7 +55,7 @@ export default function FavoritesPage() {
 
   return (
     <main className="min-h-screen bg-slate-950 pt-24 text-slate-100">
-      <div className="mx-auto max-w-6xl px-6">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <section className="mb-10">
           <h1 className="text-3xl font-semibold">Favorite Crypto</h1>
           <p className="mt-2 text-sm text-slate-300">
@@ -75,48 +75,50 @@ export default function FavoritesPage() {
 
         {coins.length > 0 && (
           <div className="overflow-hidden rounded-2xl border border-white/10 bg-slate-950/70">
-            <div className="grid grid-cols-[24px_1.4fr_1fr_1fr_1.2fr] gap-2 bg-slate-900/80 px-4 py-2 text-xs text-slate-300">
-              <span />
-              <span>Coin</span>
-              <span>Price</span>
-              <span>24h</span>
-              <span>Market Cap</span>
+            <div className="overflow-x-auto">
+              <div className="grid min-w-[680px] grid-cols-[24px_1.4fr_1fr_1fr_1.2fr] gap-2 bg-slate-900/80 px-4 py-2 text-xs text-slate-300">
+                <span />
+                <span>Coin</span>
+                <span>Price</span>
+                <span>24h</span>
+                <span>Market Cap</span>
+              </div>
+              {coins.map((coin) => {
+                const change = coin.price_change_percentage_24h ?? 0;
+                const changeClass =
+                  change >= 0 ? "text-emerald-400" : "text-rose-400";
+                return (
+                  <div
+                    key={coin.id}
+                    className="grid min-w-[680px] grid-cols-[24px_1.4fr_1fr_1fr_1.2fr] gap-2 border-t border-white/10 px-4 py-3 text-sm"
+                  >
+                    <button
+                      type="button"
+                      aria-label="Remove favorite"
+                      onClick={() => removeFavorite(coin.id)}
+                      className="text-amber-300"
+                    >
+                      ★
+                    </button>
+                    <Link href={`/prices/${coin.id}`} className="min-w-0">
+                      <div className="truncate font-medium text-white">
+                        {coin.name}
+                      </div>
+                      <div className="text-xs uppercase text-slate-300">
+                        {coin.symbol}
+                      </div>
+                    </Link>
+                    <div className="text-white">
+                      ${coin.current_price.toLocaleString()}
+                    </div>
+                    <div className={changeClass}>{change.toFixed(2)}%</div>
+                    <div className="text-slate-200">
+                      ${coin.market_cap.toLocaleString()}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-            {coins.map((coin) => {
-              const change = coin.price_change_percentage_24h ?? 0;
-              const changeClass =
-                change >= 0 ? "text-emerald-400" : "text-rose-400";
-              return (
-                <div
-                  key={coin.id}
-                    className="grid grid-cols-[24px_1.4fr_1fr_1fr_1.2fr] gap-2 border-t border-white/10 px-4 py-3 text-sm"
-                  >
-                  <button
-                    type="button"
-                    aria-label="Remove favorite"
-                    onClick={() => removeFavorite(coin.id)}
-                    className="text-amber-300"
-                  >
-                    ★
-                  </button>
-                  <Link href={`/prices/${coin.id}`} className="min-w-0">
-                    <div className="truncate font-medium text-white">
-                      {coin.name}
-                    </div>
-                    <div className="text-xs uppercase text-slate-300">
-                      {coin.symbol}
-                    </div>
-                  </Link>
-                  <div className="text-white">
-                    ${coin.current_price.toLocaleString()}
-                  </div>
-                  <div className={changeClass}>{change.toFixed(2)}%</div>
-                  <div className="text-slate-200">
-                    ${coin.market_cap.toLocaleString()}
-                  </div>
-                </div>
-              );
-            })}
           </div>
         )}
       </div>

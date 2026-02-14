@@ -25,10 +25,15 @@ export default function WalletInput() {
   return (
     <div className="space-y-3">
       <div>
-        <label className="text-xs uppercase tracking-widest text-slate-500">
+        <label
+          htmlFor="wallet-address-input"
+          className="text-xs uppercase tracking-widest text-slate-500"
+        >
           Wallet Address
         </label>
         <Input
+          id="wallet-address-input"
+          name="walletAddress"
           placeholder="0x..."
           value={address}
           onChange={(e) => setAddress(e.target.value)}

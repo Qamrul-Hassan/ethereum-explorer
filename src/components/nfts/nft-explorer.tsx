@@ -179,10 +179,15 @@ export default function NftExplorer({
       <aside className="rounded-3xl border border-white/10 bg-slate-950/60 p-6 shadow-[0_20px_60px_rgba(5,8,14,0.55)]">
         <div className="space-y-6">
           <div>
-            <label className="text-xs uppercase tracking-widest text-slate-500">
+            <label
+              htmlFor="nft-owner-input"
+              className="text-xs uppercase tracking-widest text-slate-500"
+            >
               Wallet Address or ENS
             </label>
             <input
+              id="nft-owner-input"
+              name="owner"
               value={address}
               onChange={(event) => setAddress(event.target.value)}
               placeholder="0x... or vitalik.eth"
@@ -198,10 +203,15 @@ export default function NftExplorer({
           </div>
 
           <div>
-            <label className="text-xs uppercase tracking-widest text-slate-500">
+            <label
+              htmlFor="nft-collection-filter-input"
+              className="text-xs uppercase tracking-widest text-slate-500"
+            >
               Collection Filter
             </label>
             <input
+              id="nft-collection-filter-input"
+              name="collectionFilter"
               value={collectionQuery}
               onChange={(event) => setCollectionQuery(event.target.value)}
               placeholder="Filter by collection name or symbol"
@@ -210,10 +220,15 @@ export default function NftExplorer({
           </div>
 
           <div>
-            <label className="text-xs uppercase tracking-widest text-slate-500">
+            <label
+              htmlFor="nft-sort-select"
+              className="text-xs uppercase tracking-widest text-slate-500"
+            >
               Sort
             </label>
             <select
+              id="nft-sort-select"
+              name="sortBy"
               value={sortBy}
               onChange={(event) =>
                 setSortBy(event.target.value as "name" | "tokenId" | "contract")

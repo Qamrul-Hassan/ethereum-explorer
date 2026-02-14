@@ -149,19 +149,24 @@ export default function LivePrices() {
   }, [coins, searchQuery]);
 
   return (
-    <div className="flex h-full flex-col rounded-3xl border border-white/10 bg-slate-950/70 p-6 backdrop-blur">
-      <div className="flex items-center justify-between">
+    <div className="flex h-full flex-col rounded-3xl border border-white/10 bg-slate-950/70 p-4 backdrop-blur sm:p-6">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <h2 className="text-lg font-semibold">Live Crypto Prices</h2>
         <span className="text-xs text-slate-300">
           {updatedAt ? `Updated ${updatedAt}` : "Loading..."}
         </span>
       </div>
-      <div className="mt-4 grid gap-3 md:grid-cols-3">
+      <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         <div>
-          <label className="text-[11px] uppercase tracking-widest text-slate-400">
+          <label
+            htmlFor="prices-search-input"
+            className="text-[11px] uppercase tracking-widest text-slate-400"
+          >
             Search
           </label>
           <input
+            id="prices-search-input"
+            name="search"
             value={searchQuery}
             onChange={(event) => setSearchQuery(event.target.value)}
             placeholder="Search crypto"
@@ -169,10 +174,15 @@ export default function LivePrices() {
           />
         </div>
         <div>
-          <label className="text-[11px] uppercase tracking-widest text-slate-400">
+          <label
+            htmlFor="prices-category-select"
+            className="text-[11px] uppercase tracking-widest text-slate-400"
+          >
             Category
           </label>
           <select
+            id="prices-category-select"
+            name="category"
             value={selectedCategory}
             onChange={(event) => setSelectedCategory(event.target.value)}
             className="mt-2 w-full rounded-xl border border-white/10 bg-slate-950/70 px-4 py-2 text-sm text-slate-100"
@@ -186,10 +196,15 @@ export default function LivePrices() {
           </select>
         </div>
         <div>
-          <label className="text-[11px] uppercase tracking-widest text-slate-400">
+          <label
+            htmlFor="prices-quote-select"
+            className="text-[11px] uppercase tracking-widest text-slate-400"
+          >
             Quote
           </label>
           <select
+            id="prices-quote-select"
+            name="quote"
             value={quote}
             onChange={(event) => setQuote(event.target.value)}
             className="mt-2 w-full rounded-xl border border-white/10 bg-slate-950/70 px-4 py-2 text-sm text-slate-100"
@@ -210,15 +225,15 @@ export default function LivePrices() {
         <p className="mt-4 text-sm text-red-400">{error}</p>
       ) : (
         <div className="mt-4 flex-1 overflow-hidden rounded-2xl border border-white/10">
-          <div className="grid grid-cols-[24px_1.6fr_1fr_1fr_1fr_1.2fr] gap-2 bg-slate-900/80 px-4 py-2 text-xs text-slate-300">
-            <span />
-            <span>Coin</span>
-            <span>Pair</span>
-            <span>Price</span>
-            <span>24h</span>
-            <span>Market Cap</span>
-          </div>
-          <div className="h-full overflow-y-auto">
+          <div className="h-full overflow-x-auto overflow-y-auto">
+            <div className="grid min-w-[760px] grid-cols-[24px_1.6fr_1fr_1fr_1fr_1.2fr] gap-2 bg-slate-900/80 px-4 py-2 text-xs text-slate-300">
+              <span />
+              <span>Coin</span>
+              <span>Pair</span>
+              <span>Price</span>
+              <span>24h</span>
+              <span>Market Cap</span>
+            </div>
             {filteredCoins?.map((coin) => {
               const change = coin.price_change_percentage_24h ?? 0;
               const changeText = change.toFixed(2);
@@ -228,7 +243,7 @@ export default function LivePrices() {
               return (
                 <div
                   key={coin.id}
-                  className="grid grid-cols-[24px_1.6fr_1fr_1fr_1fr_1.2fr] gap-2 border-t border-white/10 px-4 py-3 text-sm transition hover:bg-white/10"
+                  className="grid min-w-[760px] grid-cols-[24px_1.6fr_1fr_1fr_1fr_1.2fr] gap-2 border-t border-white/10 px-4 py-3 text-sm transition hover:bg-white/10"
                 >
                   <button
                     type="button"
